@@ -7,7 +7,7 @@ import scipy.sparse as sp
 import numpy as np
 import torch
 
-import data
+import datatensor
 
 def parse_index_file(filename):
     """Parse index file."""
@@ -25,7 +25,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.torch.sparse_coo_tensor(indices, values, shape)
 
-def load(dataname):
+def load(dataname, device='cpu'):
     import sys
     import pickle as pkl
     import networkx as nx
@@ -61,10 +61,17 @@ def load(dataname):
     idx_val = torch.LongTensor(idx_val)
     idx_test = torch.LongTensor(idx_test)
 
-    dataset = data.DataLoader([features], ['v'], 
+    dataset = datatensor.legacy_init([features], ['v'], 
                 [labels], ['v'],
                 [adj.indices()], [('e', 'v', 'v')])
     
     dataset.normalize()
+    
+    dataset.to(device)
+    idx_train = idx_train.to(device)
+    idx_val = idx_val.to(device)
+    idx_test = idx_test.to(device)
 
     return dataset, dataset.e['e'], dataset.x.to_homo(), dataset.y['v'], idx_train, idx_val, idx_test
+
+# print(load('cora')[0])
