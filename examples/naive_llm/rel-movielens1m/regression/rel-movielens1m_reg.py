@@ -27,10 +27,10 @@ time_start = time.time()
 
 ##### Global variables
 total_cost = 0
-train_path = "your/train_file/path"
-movie_path = "your/movie_file/path"
-test_path = "your/test_file/path"
-llm_model_path = "your/llm/path"
+train_path = "../../../../rllm/datasets/rel-movielens1m/regression/ratings/train.csv"
+movie_path = "../../../../rllm/datasets/rel-movielens1m/regression/movies.csv"
+test_path = "../../../../rllm/datasets/rel-movielens1m/regression/ratings/test.csv"
+llm_model_path = "../../../../../gemma-2b-it-q4_k_m.gguf"
 
 
 ##### 1. Construct LLM chain
