@@ -80,7 +80,7 @@ movies = pd.read_csv(
     '../../../rllm/datasets/rel-movielens1m/regression/movies.csv')
 
 init= 'Given a user\'s past movie ratings in the format: Title, Genres, Rating (Note: Ratings range from 1 to 5)'
-end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating without saying anything else if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n '
+end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n '
 
 train_prompts = df2prompts(train, init, end,1,5,1)
 val_prompts = df2prompts(val, init, end,1,5,1)
@@ -101,7 +101,7 @@ y_test = test['Rating']
 # gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device,model_name='hivemind/gpt-j-6B-8bit')
 gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
-#gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
+gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 
 y_pred= [int(p) for p in query(gpt, test_prompts,bs=4)]
 
