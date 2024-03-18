@@ -95,7 +95,7 @@ movie_genres = test["Genre"].str.split("|")
 all_genres = list(set([genre for genres in movie_genres for genre in genres]))
 
 mlb = MultiLabelBinarizer(classes=all_genres)
-real_genres_matrix = mlb.fit_transform(movie_genres)
+real_genres_matrix = mlb.fit_transform(y_test)
 pred_genres_matrix = mlb.fit_transform(y_pred)
 macro_f1 = macro_f1_score(real_genres_matrix, pred_genres_matrix)
 micro_f1 = micro_f1_score(real_genres_matrix, pred_genres_matrix)

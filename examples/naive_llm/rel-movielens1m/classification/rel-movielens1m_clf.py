@@ -94,7 +94,6 @@ real_genres_matrix = mlb.fit_transform(movie_genres)
 pred_genres_matrix = mlb.fit_transform(pred_genre_list)
 macro_f1 = macro_f1_score(real_genres_matrix, pred_genres_matrix)
 micro_f1 = micro_f1_score(real_genres_matrix, pred_genres_matrix)
-
 ##### End time
 time_end = time.time()
 
