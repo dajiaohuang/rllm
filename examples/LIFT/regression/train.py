@@ -87,7 +87,7 @@ end = 'What\'s the rating that the user will give to the movie(s)? Give a single
 
 train_prompts = df2prompts(train, init, end,1,5,1)
 val_prompts = df2prompts(val, init, end,1,5,1)
-test_prompts = df2prompts(test, init, end,1,5,1,label=False)
+test_prompts = df2prompts(test, init, end,1,5,1)
 
 
 write_jsonl('\n'.join(train_prompts),'train.json')
