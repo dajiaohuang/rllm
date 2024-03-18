@@ -103,7 +103,7 @@ gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
 gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 
-y_pred= [int(p) for p in generate(gpt, test_prompts)]
+y_pred= [int(p) for p in query(gpt, test_prompts,bs=4)]
 
 
 # acc = get_accuracy(y_pred, y_test)

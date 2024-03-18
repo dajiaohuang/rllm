@@ -107,7 +107,7 @@ def prompt2value(x):
     try:
         return int(c)
     except:
-        return None
+        return c
 
 def load_data(did, index,mixup=False):
     if mixup:
