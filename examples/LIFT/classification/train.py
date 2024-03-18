@@ -32,8 +32,8 @@ def data2text(row, label = True, init = '', end = ''):
         final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"%s@@@\"}" % (prompt, completion)
     return final_prompt
 
-def df2propmts(df, data2text_func, init = '', end = ''):
-    jsonl = df.apply(func = partial(data2text_func, init = init, end = end), axis = 1).tolist()
+def df2propmts(df, data2text_func, init='', end='', label=True):
+    jsonl = df.apply(lambda row: data2text_func(row, label=label, init=init, end=end), axis=1).tolist()
     return jsonl
 
 parser = argparse.ArgumentParser(description='')
