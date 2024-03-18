@@ -15,7 +15,7 @@ from rllm.utils import mae, get_llm_chat_cost
 
 time_start = time.time()
 
-def df2prompts(df:pd.DataFrame,init = '',end = '',prompts_each_user = 5, n_given_rows = 5,n_infer_rows = 1):
+def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 5, n_given_rows = 5,n_infer_rows = 1,label =True):
     grouped = df.groupby('UserID')
     jsonl = []
     for user,group in grouped:
@@ -47,8 +47,11 @@ def df2prompts(df:pd.DataFrame,init = '',end = '',prompts_each_user = 5, n_given
                     'Genre: ' + str(movie_info['Genre'].values[0]).replace("'", "").replace('"', '') + '; ' \
 
             prompt += end
-            completion = "|".join([str(row['Rating']) for index,row in infer_rows.iterrows()])
-            final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"%s@@@\"}" % (prompt, completion)
+            if label:
+                completion = "|".join([str(row['Rating']) for index,row in infer_rows.iterrows()])
+                final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"%s@@@\"}" % (prompt, completion)
+            else:
+                final_prompt = f"{prompt}###"
             jsonl.append(final_prompt)
     return jsonl
             

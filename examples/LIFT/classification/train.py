@@ -64,7 +64,7 @@ end = 'What is the genres it may belong to? Note: 1. Give the answer as followin
 
 train_prompts = df2propmts(train, data2text, init, end)
 val_prompts = df2propmts(val, data2text, init, end)
-test_prompts = df2propmts(test, data2text, init, end)
+test_prompts = df2propmts(test, data2text(label=False), init, end)
 
 
 write_jsonl('\n'.join(train_prompts),'train.json')
