@@ -84,17 +84,18 @@ train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_deca
 gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 pred= query(gpt, test_prompts,bs=8)
 write_jsonl('\n'.join(pred),'pred.json')
-y_pred = pd.DataFrame([x.split('"')[-1].split("|") for x in pred])
-
-# print(y_pred)
+y_pred = pd.DataFrame({'Genres': [x.split('"')[-1].split("|") for x in pred]})
+print(y_pred)
 
 movie_genres = test["Genre"].str.split("|")
-print(movie_genres)
+# print(movie_genres)
 all_genres = list(set([genre for genres in movie_genres for genre in genres]))
 
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(movie_genres)
+# print(real_genres_matrix)
 pred_genres_matrix = mlb.fit_transform(y_pred)
+print(pred_genres_matrix)
 macro_f1 = macro_f1_score(real_genres_matrix, pred_genres_matrix)
 micro_f1 = micro_f1_score(real_genres_matrix, pred_genres_matrix)
 
