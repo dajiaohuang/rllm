@@ -74,25 +74,26 @@ write_jsonl('\n'.join(test_prompts),'test.json')
 y_val = val['Genre']
 y_test = test['Genre']
 
-
-
-
+y_test= [x.split('|') for x in y_test.tolist()]
+print(y_test)
 
 # gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device,model_name='hivemind/gpt-j-6B-8bit')
 gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
 gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 
-pred= query(gpt, test_prompts,bs=4)
 
+pred= query(gpt, test_prompts,bs=4)
 y_pred = [x.split('"')[-1].split("|") for x in pred]
 print(y_pred)
+# print(y_pred)
 
 # acc = get_accuracy(y_pred, y_test)
 # print(acc)
 
 movie_genres = test["Genre"].str.split("|")
 all_genres = list(set([genre for genres in movie_genres for genre in genres]))
+# print(all_genres)
 
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(y_test)
