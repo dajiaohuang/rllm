@@ -80,7 +80,7 @@ movies = pd.read_csv(
     '../../../rllm/datasets/rel-movielens1m/regression/movies.csv')
 
 init= 'Given a user\'s past movie ratings in the format: Title, Genres, Rating (Note: Ratings range from 1 to 5)'
-end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n '
+end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n. Do not say anything else.'
 
 train_prompts = df2prompts(train, init, end,1,5,1)
 val_prompts = df2prompts(val, init, end,1,5,1)

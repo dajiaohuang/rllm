@@ -60,7 +60,7 @@ ratings = pd.read_csv(
     '../../../rllm/datasets/rel-movielens1m/classification/ratings.csv')
 
 init='Given information about a movie: '
-end = 'What is the genres it may belong to? Note: 1. Give the answer as following format: genre_1|genre_2|...|genre_n 2. The answer must only be chosen from followings:Documentary, Adventure, Comedy, Horror, War, Sci-Fi, Drama, Mystery, Western, Action, Children, Musical, Thriller, Crime, Film-Noir, Romance, Animation, Fantasy'
+end = 'What is the genres it may belong to? Note: 1. Give the answer as following format: genre_1|genre_2|...|genre_n 2. The answer must only be chosen from followings:Documentary, Adventure, Comedy, Horror, War, Sci-Fi, Drama, Mystery, Western, Action, Children, Musical, Thriller, Crime, Film-Noir, Romance, Animation, Fantasy 3.Do not say anything else.'
 
 train_prompts = df2propmts(train, data2text, init, end)
 val_prompts = df2propmts(val, data2text, init, end)
@@ -83,8 +83,9 @@ gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
 gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 
-y_pred= query(gpt, test_prompts,bs=4)
+pred= query(gpt, test_prompts,bs=4)
 
+y_pred = [x.split('"')[-1].split("|") for x in pred]
 print(y_pred)
 
 # acc = get_accuracy(y_pred, y_test)
