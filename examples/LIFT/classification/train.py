@@ -17,12 +17,12 @@ time_start = time.time()
 def data2text(row, label = True, init = '', end = ''):
     prompt = init 
     prompt += ' Title:'+str(row['Title']).replace("'", "").replace('"', '')\
-        # +' Year:'+ str(row['Year']).replace("'", "").replace('"', '')\
         # +' Director:'+str(row['Director']).replace("'", "").replace('"', '')\
         # +' Cast:'+str(row['Cast'])+' Runtime:'+str(row['Runtime']).replace("'", "").replace('"', '')\
+        # +' Plot:'+str(row['Plot']).replace("'", "").replace('"', '')
         # +' Languages:'+ str(row['Languages']).replace("'", "").replace('"', '')\
         # +' Certificate:'+str(row['Certificate']).replace("'", "").replace('"', '')\
-        # +' Plot:'+str(row['Plot']).replace("'", "").replace('"', '')
+        # +' Year:'+ str(row['Year']).replace("'", "").replace('"', '')\
     prompt += end
 
     if not label:
@@ -86,14 +86,9 @@ gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoin
 pred= query(gpt, test_prompts,bs=4)
 y_pred = [x.split('"')[-1].split("|") for x in pred]
 print(y_pred)
-# print(y_pred)
-
-# acc = get_accuracy(y_pred, y_test)
-# print(acc)
 
 movie_genres = test["Genre"].str.split("|")
 all_genres = list(set([genre for genres in movie_genres for genre in genres]))
-# print(all_genres)
 
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(y_test)
