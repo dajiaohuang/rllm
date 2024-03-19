@@ -74,7 +74,9 @@ write_jsonl('\n'.join(test_prompts),'test.json')
 y_val = val['Genre']
 y_test = test['Genre']
 
-
+movie_genres = test["Genre"].str.split("|")
+print(movie_genres)
+all_genres = list(set([genre for genres in movie_genres for genre in genres]))
 # print(y_test)
 
 # gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device,model_name='hivemind/gpt-j-6B-8bit')
@@ -87,9 +89,7 @@ write_jsonl('\n'.join(pred),'pred.json')
 y_pred = pd.DataFrame({'Genres': [x.split('"')[-1].split("|") for x in pred]})
 print(y_pred)
 
-movie_genres = test["Genre"].str.split("|")
-# print(movie_genres)
-all_genres = list(set([genre for genres in movie_genres for genre in genres]))
+
 
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(movie_genres)
