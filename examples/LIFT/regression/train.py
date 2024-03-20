@@ -18,13 +18,13 @@ time_start = time.time()
 def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,n_infer_rows = 1,sample_users=10,label =True):
     grouped = df.groupby('UserID')
     if sample_users:
-        sampled_groups = grouped.sample(n=sample_users)
-        print (sampled_groups)
+        selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False)
+        selected_groups = [grouped.get_group(user) for user in selected_users]
     else:
-        sampled_groups = grouped
+        selected_groups = grouped
     
     jsonl = []
-    for user,group in grouped:
+    for user,group in selected_groups:
         
         print(group)
         for i in range(prompts_each_user):
