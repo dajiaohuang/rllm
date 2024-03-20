@@ -23,9 +23,9 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
         sampled_groups = grouped
     
     jsonl = []
-    for user,group in sampled_groups:
+    for group in sampled_groups:
         
-        # print(group.head(5))
+        print(group.head(5))
         for i in range(prompts_each_user):
             given_rows = group.sample(n = n_given_rows,replace= True )
             infer_rows = group.sample(n = n_infer_rows,replace= True)
