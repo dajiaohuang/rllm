@@ -26,7 +26,7 @@ def data2text(row, label = True, init = '', end = ''):
     prompt += end
 
     if not label:
-        final_prompt = f"{prompt}###"
+        final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"@@@\"}" % (prompt)
     else:
         completion = row['Genre']
         final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"%s@@@\"}" % (prompt, completion)
