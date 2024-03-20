@@ -19,8 +19,9 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
     grouped = df.groupby('UserID')
     if sample_users:
         selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False)
-        print(selected_users)
+        # print(selected_users)
         selected_groups = [grouped.get_group(user[0]) for user in selected_users]
+        print(selected_groups)
     else:
         selected_groups = grouped
     
