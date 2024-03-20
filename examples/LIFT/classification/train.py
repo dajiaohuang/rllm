@@ -95,8 +95,8 @@ test_prompts = extract_prompts('data/test.json')
 pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
 print(pred)
-pred = pd.DataFrame({'Genre':[x.split('"')[-1] for x in pred]})
-y_pred = pred['Genre'].str.split("|")
+pred = pd.DataFrame({'Genre':pred})
+y_pred = pred['Genre'].str.split("|").apply(lambda x: any(genre in x for genre in all_genres))
 print(y_pred)
 
 
