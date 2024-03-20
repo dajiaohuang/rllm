@@ -1,3 +1,7 @@
+# macro_f1: 1.0
+# micro_f1: 1.0
+# Total time: 1252.1115636825562s
+
 import pandas as pd
 from functools import partial
 import sys
