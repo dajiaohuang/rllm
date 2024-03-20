@@ -26,7 +26,8 @@ def data2text(row, label = True, init = '', end = ''):
     prompt += end
 
     if not label:
-        final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"@@@\"}" % (prompt)
+        # final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"@@@\"}" % (prompt)
+        final_prompt = "{\"prompt\":\"%s###\"}" % (prompt)
     else:
         completion = row['Genre']
         final_prompt = "{\"prompt\":\"%s###\", \"completion\":\"%s@@@\"}" % (prompt, completion)
@@ -78,7 +79,7 @@ movie_genres = test["Genre"].str.split("|")
 # print(type(test["Genre"]))
 # print(movie_genres)
 all_genres = list(set([genre for genres in movie_genres for genre in genres]))
-# print(y_test)
+print(y_test)
 
 # gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device,model_name='hivemind/gpt-j-6B-8bit')
 
@@ -90,7 +91,7 @@ pred = query(gpt, test_prompts,bs=8)
 print(pred)
 pred = pd.DataFrame({'Genre':[x.split('"')[-1] for x in pred]})
 y_pred = pred['Genre'].str.split("|")
-# print(y_pred)
+print(y_pred)
 
 
 
