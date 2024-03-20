@@ -65,7 +65,7 @@ ratings = pd.read_csv(
     '../../../rllm/datasets/rel-movielens1m/classification/ratings.csv')
 
 init='Given information about a movie: '
-end = 'What is the genres it may belong to? Note: 1. Give the answer as following format: genre_1|genre_2|...|genre_n 2. The answer must only be chosen from followings:Documentary, Adventure, Comedy, Horror, War, Sci-Fi, Drama, Mystery, Western, Action, Children, Musical, Thriller, Crime, Film-Noir, Romance, Animation, Fantasy 3.Do not say anything else.'
+end = 'What is the genres it may belong to? Note: 1. Give the answer as following format: genre_1|genre_2|...|genre_n 2. The answer must only be chosen from followings:Documentary, Adventure, Comedy, Horror, War, Sci-Fi, Drama, Mystery, Western, Action, Children\'s, Musical, Thriller, Crime, Film-Noir, Romance, Animation, Fantasy 3.Do not say anything else.'
 
 train_prompts = df2propmts(train, data2text, init, end)
 val_prompts = df2propmts(val, data2text, init, end)
@@ -96,7 +96,7 @@ pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
 print(pred)
 pred = pd.DataFrame({'Genre':pred})
-y_pred = pred['Genre'].str.split("|").apply(lambda x: any(genre in x for genre in all_genres))
+y_pred = pred['Genre'].str.split("|").apply(lambda x: any(genre in x for genre in all_genres) if x is not None else False)
 print(y_pred)
 
 
