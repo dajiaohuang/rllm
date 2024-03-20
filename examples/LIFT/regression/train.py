@@ -19,11 +19,12 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
     grouped = df.groupby('UserID')
     if sample_users:
         sampled_groups = grouped.sample(n=sample_users)
+        print (sampled_groups)
     else:
         sampled_groups = grouped
     
     jsonl = []
-    for group in sampled_groups:
+    for user,group in grouped:
         
         print(group)
         for i in range(prompts_each_user):
