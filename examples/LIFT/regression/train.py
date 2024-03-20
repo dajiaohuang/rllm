@@ -117,7 +117,7 @@ train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_deca
 
 test_prompts = extract_prompts('data/test.json')
 pred= query(gpt, test_prompts,bs=8)
-write_jsonl(pred,'pred.json')
+print(pred)
 y_pred = pd.DataFrame({'Rating':[x.split('"')[-1] for x in pred]})['Rating']
 
 
