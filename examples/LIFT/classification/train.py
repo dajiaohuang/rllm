@@ -65,7 +65,7 @@ end = 'What is the genres it may belong to? Note: 1. Give the answer as followin
 
 train_prompts = df2propmts(train, data2text, init, end)
 val_prompts = df2propmts(val, data2text, init, end)
-test_prompts = df2propmts(test, data2text, init, end,label=False)
+test_prompts = df2propmts(test, data2text, init, end)
 
 
 write_jsonl('\n'.join(train_prompts),'train.json')
@@ -85,7 +85,7 @@ print(y_test)
 
 gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
-# gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
+gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
 print(pred)
