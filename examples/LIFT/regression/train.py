@@ -15,7 +15,7 @@ from rllm.utils import mae, get_llm_chat_cost
 
 time_start = time.time()
 
-def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,n_infer_rows = 1,sample_users=10,label =True):
+def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,sample_users=10,label =True):
     grouped = df.groupby('UserID')
     if sample_users:
         selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False)
@@ -31,7 +31,7 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
         # print(group)
         for i in range(prompts_each_user):
             given_rows = group.sample(n = n_given_rows,replace= True )
-            infer_rows = group.sample(n = n_infer_rows,replace= True)
+            infer_rows = group.sample(n = 1,replace= True)
             prompt = init 
             
             n = 0
@@ -50,7 +50,7 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
             for index,row in infer_rows.iterrows():
                 n += 1
                 id = row['MovieID']
-                prompt += str(n)+') '\
+                prompt += \
                     'Title: ' + str(movie_info['Title'].values[0]).replace("'", "").replace('"', '') + ' ' \
                     'Genre: ' + str(movie_info['Genre'].values[0]).replace("'", "").replace('"', '') + '; ' \
 
@@ -91,8 +91,8 @@ movies = pd.read_csv(
     '../../../rllm/datasets/rel-movielens1m/regression/movies.csv')
 
 init= 'Given a user\'s past movie ratings in the format: Title, Genres, Rating (Note: Ratings range from 1 to 5)'
-end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n. Do not say anything else.'
-
+#end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n. Do not say anything else.'
+end = 'What\'s the rating that the user will give to the movie? Give a single number as rating. Do not say anything else.'
 train_prompts = df2prompts(train, init, end)
 val_prompts = df2prompts(val, init, end)
 test_prompts = df2prompts(test, init, end)
