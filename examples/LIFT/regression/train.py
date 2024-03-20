@@ -28,7 +28,7 @@ def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_give
     jsonl = []
     for group in selected_groups:
         
-        print(group)
+        # print(group)
         for i in range(prompts_each_user):
             given_rows = group.sample(n = n_given_rows,replace= True )
             infer_rows = group.sample(n = n_infer_rows,replace= True)
@@ -117,7 +117,7 @@ train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_deca
 
 test_prompts = extract_prompts('data/test.json')
 pred= query(gpt, test_prompts,bs=8)
-write_jsonl('\n'.join(pred),'pred.json')
+write_jsonl(pred,'pred.json')
 y_pred = pd.DataFrame({'Rating':[x.split('"')[-1] for x in pred]})['Rating']
 
 
