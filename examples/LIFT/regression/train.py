@@ -15,7 +15,7 @@ from rllm.utils import mae, get_llm_chat_cost
 
 time_start = time.time()
 
-def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,sample_users=10,label =True):
+def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,sample_users=100,label =True):
     grouped = df.groupby('UserID')
     if sample_users:
         selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False)
