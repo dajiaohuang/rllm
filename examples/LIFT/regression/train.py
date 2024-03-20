@@ -118,7 +118,15 @@ gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoin
 test_prompts = extract_prompts('data/test.json')
 pred= query(gpt, test_prompts,bs=8)
 print(pred)
-y_pred = pd.DataFrame({'Rating':[x.split('"')[-1] for x in pred]})['Rating']
+
+pred_l=[]
+for x in pred:
+    try: 
+        pred_l.append(int(x))
+    except:
+        pred_l.append(0)
+
+y_pred = pd.DataFrame({'Rating':pred_l})['Rating']
 
 
 
