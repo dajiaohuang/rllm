@@ -15,10 +15,15 @@ from rllm.utils import mae, get_llm_chat_cost
 
 time_start = time.time()
 
-def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 5, n_given_rows = 5,n_infer_rows = 1,label =True):
+def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,n_infer_rows = 1,sample_users=10,label =True):
     grouped = df.groupby('UserID')
+    if sample_users:
+        sampled_groups = grouped.sample(n=sample_users)
+    else:
+        sampled_groups = grouped
+    
     jsonl = []
-    for user,group in grouped:
+    for user,group in sampled_groups:
         
         # print(group.head(5))
         for i in range(prompts_each_user):
@@ -85,9 +90,9 @@ movies = pd.read_csv(
 init= 'Given a user\'s past movie ratings in the format: Title, Genres, Rating (Note: Ratings range from 1 to 5)'
 end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n. Do not say anything else.'
 
-train_prompts = df2prompts(train, init, end,1,5,1)
-val_prompts = df2prompts(val, init, end,1,5,1)
-test_prompts = df2prompts(test, init, end,1,5,1)
+train_prompts = df2prompts(train, init, end)
+val_prompts = df2prompts(val, init, end)
+test_prompts = df2prompts(test, init, end,sample_users=None)
 
 
 write_jsonl('\n'.join(train_prompts),'train.json')
@@ -105,6 +110,8 @@ y_test = test['Rating']
 gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
 train_configs={'learning_rate': 1e-5, 'batch_size': 1, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
 #gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
+
+test_prompts = extract_prompts('data/test.json')
 pred= query(gpt, test_prompts,bs=8)
 write_jsonl('\n'.join(pred),'pred.json')
 y_pred = pd.DataFrame({'Rating':[x.split('"')[-1] for x in pred]})['Rating']
