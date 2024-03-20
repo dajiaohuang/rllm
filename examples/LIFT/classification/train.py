@@ -5,6 +5,7 @@
 import pandas as pd
 from functools import partial
 import sys
+import re
 
 sys.path.append("../src")
 from utils.helper import data2text,write_jsonl
@@ -96,7 +97,8 @@ pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
 print(pred)
 pred = pd.DataFrame({'Genre':pred})
-y_pred = pred['Genre'].str.split("|").apply(lambda x: any(genre in x for genre in all_genres) if x is not None else False)
+#y_pred = pred['Genre'].str.split("|").apply(lambda x: [genre for genre in x if genre in all_genres])
+y_pred = pred['Genre'].apply(lambda x: [genre for genre in re.split(r'[@|#|\s]', x) if genre in all_genres])
 print(y_pred)
 
 
