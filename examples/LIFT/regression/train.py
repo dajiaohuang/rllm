@@ -18,7 +18,7 @@ time_start = time.time()
 def df2prompts(df:pd.DataFrame, init = '',end = '',prompts_each_user = 1, n_given_rows = 5,n_infer_rows = 1,sample_users=10,label =True):
     grouped = df.groupby('UserID')
     if sample_users:
-        selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False)
+        selected_users = grouped['UserID'].unique().sample(n=sample_users, replace=False).tolist()
         selected_groups = [grouped.get_group(user) for user in selected_users]
     else:
         selected_groups = grouped
