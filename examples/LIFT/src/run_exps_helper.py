@@ -260,6 +260,6 @@ def query(gpt, prompts, bs=10):
         try:
             output = prompt2value(txt.split('@@@')[0].split('###')[-1])
         except:
-            output = None
+            output = txt
         ans.append(output)
     return ans
