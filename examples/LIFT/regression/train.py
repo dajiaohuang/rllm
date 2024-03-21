@@ -1,5 +1,6 @@
-# mae_loss: 1.2
-# Total time: 204.38242769241333s
+#mae_loss: 1.044205298013245
+#Total time: 4518.223552465439s
+
 
 
 import pandas as pd

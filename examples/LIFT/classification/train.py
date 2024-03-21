@@ -96,17 +96,25 @@ test_prompts = extract_prompts('data/test.json')
 pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
 print(pred)
+
 pred = pd.DataFrame({'Genre':pred})
-#y_pred = pred['Genre'].str.split("|").apply(lambda x: [genre for genre in x if genre in all_genres])
-y_pred = pred['Genre'].apply(lambda x: [genre for genre in re.split(r'[@|#|\s]', x) if genre in all_genres])
-print(y_pred)
+y_pred = pred['Genre'].str.split("|")
+y_pred_filtered = []
+for genres in y_pred:
+    filtered_genres = [genre for genre in genres if genre in listed_genres]
+    if len(filtered_genres) == 0:
+        y_pred_filtered.append(pd.Series([]))
+    else:
+        y_pred_filtered.append(pd.Series(filtered_genres))
+
+
 
 
 
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(movie_genres)
 # print(real_genres_matrix)
-pred_genres_matrix = mlb.fit_transform(y_pred)
+pred_genres_matrix = mlb.fit_transform(y_pred_filtered)
 # print(pred_genres_matrix)
 macro_f1 = macro_f1_score(real_genres_matrix, pred_genres_matrix)
 micro_f1 = micro_f1_score(real_genres_matrix, pred_genres_matrix)
