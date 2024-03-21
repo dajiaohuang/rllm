@@ -1,4 +1,4 @@
-# mae_loss: 1.44
+# mae_loss: 1.2
 # Total time: 204.38242769241333s
 
 
@@ -97,9 +97,9 @@ movies = pd.read_csv(
 init= 'Given a user\'s past movie ratings in the format: Title, Genres, Rating (Note: Ratings range from 1 to 5)'
 #end = 'What\'s the rating that the user will give to the movie(s)? Give a single number as rating if there\'s only one movie, else return like this: rating_for_movie1|rating_for_movie_2|...|rating_for_movie_n. Do not say anything else.'
 end = 'What\'s the rating that the user will give to the movie? Give a single number as rating. Do not say anything else.'
-train_prompts = df2prompts(train, init, end)
-val_prompts = df2prompts(val, init, end)
-test_prompts = df2prompts(test, init, end)
+train_prompts = df2prompts(train, init, end,sample_users=1000)
+val_prompts = df2prompts(val, init, end,sample_users=None)
+test_prompts = df2prompts(test, init, end,sample_users=None)
 # test_prompts = df2prompts(test, init, end,sample_users=None)
 
 
