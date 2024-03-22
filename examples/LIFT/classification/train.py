@@ -101,7 +101,7 @@ pred = pd.DataFrame({'Genre':pred})
 y_pred = pred['Genre'].str.split("|")
 y_pred_filtered = []
 for genres in y_pred:
-    filtered_genres = [genre for genre in genres if genre in listed_genres]
+    filtered_genres = [genre for genre in genres if genre in all_genres]
     if len(filtered_genres) == 0:
         y_pred_filtered.append(pd.Series([]))
     else:
