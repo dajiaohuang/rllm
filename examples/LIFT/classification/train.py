@@ -109,10 +109,11 @@ pred = query(gpt, test_prompts,bs=8)
 y_pred = []
 
 for row in pred:
-    split_row = row.split('|')
     filter_row = []
-    for genre in split_row:
-        if genre in all_genres: filter_row.append(genre)
+    if row:
+        split_row = row.split('|')
+        for genre in split_row:
+            if genre in all_genres: filter_row.append(genre)
     y_pred.append(filter_row)
     
 y_pred=pd.Series(y_pred)
