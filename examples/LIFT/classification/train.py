@@ -89,24 +89,34 @@ print(y_test)
 # gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device,model_name='hivemind/gpt-j-6B-8bit')
 
 gpt = GPTJ.LoRaQGPTJ(adapter=True, device=device)
-train_configs={'learning_rate': 1e-5, 'batch_size': 2, 'epochs':2,  'weight_decay': 0.01, 'warmup_steps': 6}
+train_configs={'learning_rate': 1e-5, 'batch_size': 2, 'epochs':1,  'weight_decay': 0.01, 'warmup_steps': 6}
 gpt.finetune('data/train.json', 'data/val.json', train_configs, saving_checkpoint=False)
 
 test_prompts = extract_prompts('data/test.json')
 pred = query(gpt, test_prompts,bs=8)
 # write_jsonl('\n'.join(pred),'pred.json')
-print(pred)
+# print(pred)
 
-pred = pd.DataFrame({'Genre':pred})
-y_pred = pred['Genre'].str.split("|")
-y_pred_filtered = []
-for genres in y_pred:
-    filtered_genres = [genre for genre in genres if genre in all_genres]
-    if len(filtered_genres) == 0:
-        y_pred_filtered.append(pd.Series([]))
-    else:
-        y_pred_filtered.append(pd.Series(filtered_genres))
+# pred = pd.DataFrame({'Genre':pred})
+# y_pred = pred['Genre'].str.split("|")
+# y_pred_filtered = []
+# for genres in y_pred:
+#     filtered_genres = [genre for genre in genres if genre in all_genres]
+#     if len(filtered_genres) == 0:
+#         y_pred_filtered.append(pd.Series([]))
+#     else:
+#         y_pred_filtered.append(pd.Series(filtered_genres))
+y_pred = []
 
+for row in pred:
+    split_row = row.split('|')
+    filter_row = []
+    for genre in split_row:
+        if genre in all_genres: filter_row.append(genre)
+    y_pred.append(filter_row)
+    
+y_pred=pd.Series(y_pred)
+    
 
 
 
@@ -114,7 +124,7 @@ for genres in y_pred:
 mlb = MultiLabelBinarizer(classes=all_genres)
 real_genres_matrix = mlb.fit_transform(movie_genres)
 # print(real_genres_matrix)
-pred_genres_matrix = mlb.fit_transform(y_pred_filtered)
+pred_genres_matrix = mlb.fit_transform(y_pred)
 # print(pred_genres_matrix)
 macro_f1 = macro_f1_score(real_genres_matrix, pred_genres_matrix)
 micro_f1 = micro_f1_score(real_genres_matrix, pred_genres_matrix)
