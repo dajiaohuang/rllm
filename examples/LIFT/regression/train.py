@@ -1,5 +1,6 @@
-#mae_loss: 1.044205298013245
-#Total time: 4518.223552465439s
+# Paper: LIFT: Language-Interfaced FineTuning for Non-Language Machine Learning Tasks (NeurIPS 2022)
+# mae_loss: 1.044205298013245
+# Total time: 4518.223552465439s
 
 
 

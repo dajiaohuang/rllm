@@ -1,6 +1,8 @@
-# macro_f1: 1.0
-# micro_f1: 1.0
-# Total time: 1252.1115636825562s
+# Paper: LIFT: Language-Interfaced FineTuning for Non-Language Machine Learning Tasks (NeurIPS 2022)
+# macro_f1: 0.1293655952583329
+# micro_f1: 0.29685807150595883
+# Total time: 875.0060040950775s
+
 
 import pandas as pd
 from functools import partial
